@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360° Virtual Tour</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+    <style>
+        #panorama {
+            width: 100%;
+            height: 100vh;
+        }
+        .tour-info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            z-index: 100;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="tour-info">
+        <h3>Virtual Tour</h3>
+        <p>Click on arrows to navigate between locations</p>
+    </div>
+    <div id="panorama"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <script>
+        // Initialize the tour
+        pannellum.viewer('panorama', {
+            "default": {
+                "firstScene": "scene1",
+                "author": "Your Name",
+                "fadeIn": 1000,
+                "fadeLoad": true
+            },
+            "scenes": {
+                "scene1": {
+                    "title": "Location 1 - Street View",
+                    "type": "equirectangular",
+                    "panorama": "1-1.jpg", // Your first 360 image
+                    "hotSpots": [
+                        {
+                            "pitch": -5,
+                            "yaw": 100,
+                            "type": "scene",
+                            "text": "Go to Louvre Museum",
+                            "sceneId": "scene2",
+                            "createTooltipFunc": hotspot,
+                            "createTooltipArgs": "Go to Louvre"
+                        }
+                    ]
+                },
+                "scene2": {
+                    "title": "Location 2 - Louvre Museum",
+                    "type": "equirectangular",
+                    "panorama": "1-2.jpg", // Your Louvre image
+                    "hotSpots": [
+                        {
+                            "pitch": -10,
+                            "yaw": -150,
+                            "type": "scene",
+                            "text": "Back to Street",
+                            "sceneId": "scene1",
+                            "createTooltipFunc": hotspot,
+                            "createTooltipArgs": "Back to Street"
+                        }
+                    ]
+                }
+            }
+        });
+
+        // Custom hotspot function
+        function hotspot(hotSpotDiv, text) {
+            hotSpotDiv.classList.add('custom-hotspot');
+            var span = document.createElement('span');
+            span.innerHTML = text;
+            hotSpotDiv.appendChild(span);
+        }
+    </script>
+</body>
+</html>
